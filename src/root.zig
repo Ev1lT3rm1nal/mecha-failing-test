@@ -78,12 +78,12 @@ pub fn charsetParser(alloc: std.mem.Allocator, charset: []const u8) mecha.Error!
 }
 
 test "charset parset" {
-    try std.testing.expect((try charset_parser.parse(std.testing.allocator, "charset: ansi_latin")).value == .AnsiLatin);
-    try std.testing.expect((try charset_parser.parse(std.testing.allocator, "charset: ansi_latin_ii")).value == .AnsiLatinIi);
-    try std.testing.expect((try charset_parser.parse(std.testing.allocator, "charset: ansi_chinese_big5")).value == .AnsiChineseBig5);
-    try std.testing.expect((try charset_parser.parse(std.testing.allocator, "charset: apple_roman")).value == .AppleRoman);
+    try std.testing.expectEqual(.AnsiLatin, (try charset_parser.parse(std.testing.allocator, "charset: ansi_latin")).value);
+    try std.testing.expectEqual(.AnsiLatinIi, (try charset_parser.parse(std.testing.allocator, "charset: ansi_latin_ii")).value);
+    try std.testing.expectEqual(.AnsiChineseBig5, (try charset_parser.parse(std.testing.allocator, "charset: ansi_chinese_big5")).value);
+    try std.testing.expectEqual(.AppleRoman, (try charset_parser.parse(std.testing.allocator, "charset: apple_roman")).value);
 }
 
 test "this should not fail but fails" {
-    try std.testing.expect((try charset_parser.parse(std.testing.allocator, "charset: apple_roman")).value == .AppleRoman);
+    try std.testing.expectEqual(.AppleRoman, (try charset_parser.parse(std.testing.allocator, "charset: apple_roman")).value);
 }
