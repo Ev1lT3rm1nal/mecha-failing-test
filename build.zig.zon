@@ -1,0 +1,14 @@
+.{
+    .name = "mecha-failing-test",
+    .version = "0.0.0",
+
+    .dependencies = .{
+        .mecha = .{
+            .url = "https://github.com/Hejsil/mecha/archive/d372a6b18e5619034ff0f7535260163aa908a7ab.tar.gz",
+            .hash = "1220fa7a67be74fe52ff263d08cad62e5609c78d7b281ba6f601a395d82834476807",
+        },
+    },
+    .paths = .{
+        "",
+    },
+}
