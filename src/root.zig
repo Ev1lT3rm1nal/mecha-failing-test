@@ -68,9 +68,15 @@ pub fn charsetParser(alloc: std.mem.Allocator, charset: []const u8) mecha.Error!
     defer words.deinit();
 
     while (values.next()) |word| {
-        var other = @constCast(word);
+        var other = try alloc.alloc(u8, word.len);
+        @memcpy(other, word);
         other[0] = std.ascii.toUpper(word[0]);
         try words.append(other);
+    }
+    defer {
+        for (words.items) |word| {
+            alloc.free(word);
+        }
     }
     const joined = try std.mem.join(alloc, "", words.items);
     defer alloc.free(joined);
