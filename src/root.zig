@@ -64,17 +64,14 @@ const charset_parser = mecha.combine(.{
 
 pub fn charsetParser(alloc: std.mem.Allocator, charset: []const u8) mecha.Error!Charset {
     var values = std.mem.tokenizeScalar(u8, charset, '_');
-    var words = std.ArrayList([]const u8).init(alloc);
-    defer words.deinit();
+    var buf: [0x100]u8 = undefined;
+    var fbs = std.io.fixedBufferStream(&buf);
 
     while (values.next()) |word| {
-        var other = @constCast(word);
-        other[0] = std.ascii.toUpper(word[0]);
-        try words.append(other);
+        _ = fbs.writer().writeByte(std.ascii.toUpper(word[0])) catch return mecha.Error.OtherError;
+        _ = fbs.writer().write(word[1..]) catch return mecha.Error.OtherError;
     }
-    const joined = try std.mem.join(alloc, "", words.items);
-    defer alloc.free(joined);
-    return (try charset_enum_parser.parse(alloc, joined)).value;
+    return (try charset_enum_parser.parse(alloc, fbs.getWritten())).value;
 }
 
 test "charset parset" {
